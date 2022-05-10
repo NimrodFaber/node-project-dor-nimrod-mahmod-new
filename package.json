@@ -1,0 +1,24 @@
+{
+  "name": "project-dor-nimrod-mahmod-new",
+  "version": "1.0.0",
+  "description": "node project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dorachinakar/node-project-dor-nimrod-mahmod-new.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dorachinakar/node-project-dor-nimrod-mahmod-new/issues"
+  },
+  "homepage": "https://github.com/Dorachinakar/node-project-dor-nimrod-mahmod-new#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mongoose": "^6.3.3",
+    "nodemon": "^2.0.16"
+  }
+}
