@@ -1,0 +1,14 @@
+GET /getALLUsers 304 - - 36.880 ms
+GET /getALLUsers 304 - - 8.416 ms
+GET /getALLUsers 304 - - 6.628 ms
+GET /getALLUsers 304 - - 8.651 ms
+GET /getALLUsers 304 - - 40.986 ms
+GET /getALLUsers 304 - - 7.217 ms
+GET /getALLUsers 304 - - 48.431 ms
+GET /getALLUsers 304 - - 40.701 ms
+GET /getALLUsers 304 - - 8.838 ms
+GET /getALLUsers 304 - - 37.433 ms
+GET /getALLUsers 200 - - 39.363 ms
+GET /getALLUsers 201 - - 38.020 ms
+GET /getALLUsers 201 9 - 43.025 ms
+GET /getALLUsers 201 9 - 40.176 ms
