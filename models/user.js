@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Joi = require("joi");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -8,13 +9,26 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: "The tz text is a required field!",
   },
-  phone: {
-    type: String,
-    required: "You need a phone!!!!!",
-  },
+
   isVip: {
-    type: String,
+    type: Boolean,
     required: "tell me if u are a vip",
   },
+  email: {
+    type: String,
+    // required: "tell me if u are a vip",
+    unique: true,
+  },
 });
-module.exports = mongoose.model("User", userSchema,'users');
+
+userSchema.methods.validateUserSchema = function (user) {
+  const blogschema = Joi.object({
+    name: Joi.string().required(),
+    isVip: Joi.boolean().required(),
+
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  });
+  return blogschema;
+};
+module.exports = mongoose.model("User", userSchema, "users");

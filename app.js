@@ -3,6 +3,9 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const port = 2423;
+//js import
+var fs = require("fs");
+var path = require("path");
 //cors
 const cors = require("cors");
 let corsOptions = {
@@ -10,7 +13,10 @@ let corsOptions = {
   optionsSuccessStatus: 200,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 };
-
+//logger
+let accessLogStream = fs.createWriteStream(path.join(__dirname, "logger.log"), {
+  flags: "a",
+});
 //chalk
 const chalk = require("chalk");
 const log = chalk.bold.white.bgGreen;
@@ -18,7 +24,8 @@ const error = chalk.bold.white.bgRed;
 
 // siteRouter = require("./routers/siterouter"),
 // scrapedRouter = require("./routers/scrapedrouter");
-
+//joi
+const Joi = require("joi");
 //middelware
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
@@ -35,15 +42,6 @@ app.use(morgan("tiny", { stream: accessLogStream }));
 const User = require("./models/user");
 const { addUser, getAllUsers } = require("./controllers/users");
 
-//js import
-var fs = require("fs");
-var path = require("path");
-
-//logger
-let accessLogStream = fs.createWriteStream(path.join(__dirname, "logger.log"), {
-  flags: "a",
-});
-
 //all get req
 app.get("/getALLUsers", cors(corsOptions), (req, res) => {
   getAllUsers()
@@ -54,16 +52,21 @@ app.get("/getALLUsers", cors(corsOptions), (req, res) => {
     .catch((err) => res.json(error(err)));
 });
 //all post req
-app.post("/addUser", (req, res) => {
-  let { name, password, phone, isVip } = req.body;
-  const user = { name, password, phone, isVip };
+app.post("/user/register", (req, res) => {
+  let { name, password, isVip, email } = req.body;
+  const user = { name, password, isVip, email };
+
   addUser(user)
     .then((user) => {
       res.json(user);
       console.log(log("user is addit"));
     })
     .catch((err) => {
-      res.json(err);
+      res.status(400).json({
+        status: "error",
+        message: err.message,
+      });
+
       console.log(error(err));
     });
 });
