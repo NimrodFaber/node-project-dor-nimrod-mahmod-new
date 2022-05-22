@@ -1,14 +1,16 @@
 const User = require("../models/user");
-
+jwt = require("jsonwebtoken");
 function addUser(user) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const newUser = new User(user);
-    const { error, value } = newUser.validateUserSchema().validate(newUser);
-
-    if (error) {
-      reject(error);
-    } else {
-      newUser.save().then((user) => resolve(user));
+    const { error, value } = newUser.validateUserSchema().validate(user);
+    if (error) reject(error);
+    else {
+      await newUser.hashPassword();
+      newUser
+        .save()
+        .then((user) => resolve(user))
+        .catch((err) => reject(err));
     }
   });
 }
@@ -20,6 +22,11 @@ function getAllUsers() {
       .catch((err) => reject(err));
   });
 }
+const generateToken = (user) => {
+  return jwt.sign({ user_id: user._id, isVip: user.isVip }, "myKey", {
+    expiresIn: "3m",
+  });
+};
 
 // function validateUser(user) {
 //   const isValid = newUser.validateUserSchema(user);
@@ -28,3 +35,4 @@ function getAllUsers() {
 // }
 exports.getAllUsers = getAllUsers;
 exports.addUser = addUser;
+exports.generateToken = generateToken;
