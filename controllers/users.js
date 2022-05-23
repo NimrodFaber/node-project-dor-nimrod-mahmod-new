@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const User = require("../models/user"),
 jwt = require("jsonwebtoken");
 function addUser(user) {
   return new Promise(async (resolve, reject) => {
@@ -28,11 +28,18 @@ const generateToken = (user) => {
   });
 };
 
-// function validateUser(user) {
-//   const isValid = newUser.validateUserSchema(user);
-//   if (isValid.error) {
-//   }
-// }
+
+function getUserById(_id)  {
+ console.log(_id._id);
+  return new Promise((resolve, reject) => {
+   
+    User.findById(_id)
+      .then((User) => resolve(User))
+      .catch((err) => reject(err));
+  });
+}
+
 exports.getAllUsers = getAllUsers;
+exports.getUserById = getUserById;
 exports.addUser = addUser;
 exports.generateToken = generateToken;

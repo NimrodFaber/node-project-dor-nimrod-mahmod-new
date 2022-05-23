@@ -44,8 +44,9 @@ app.use(morgan("tiny", { stream: accessLogStream }));
 
 //import that we build
 const User = require("./models/user");
-const { addUser, getAllUsers, generateToken } = require("./controllers/users");
-const { getAllVisitCard , getById} = require("./controllers/visitCard");
+const { addUser, getAllUsers, generateToken,getUserById } = require("./controllers/users");
+const { getAllVisitCard, getById } = require("./controllers/visitCard");
+const user = require("./models/user");
 
 //all get req
 app.get("/getALLUsers", cors(corsOptions), (req, res) => {
@@ -56,22 +57,26 @@ app.get("/getALLUsers", cors(corsOptions), (req, res) => {
     })
     .catch((err) => res.json(error(err)));
 });
-app.get("/user", auth, (req, res, next) => {
-  if (auth) {
-    res.send("hhhhh");
-  }
-});
 
-app.get("/", (req, res) => {
+
+
+app.get("/card", (req, res) => {
   getAllVisitCard()
     .then((visitCard) => res.status(200).json(visitCard))
     .catch((err) => res.status(404).json(err));
 });
 
 app.get("/:id", (req, res) => {
-  let id = req.params.id
+  let id = req.params;
   getById(id)
     .then((visitCard) => res.status(200).json(visitCard))
+    .catch((err) => res.status(404).json(err));
+});
+
+app.get("/token", auth,(req, res) => {
+  let id = req.user_id
+  getUserById(id)
+    .then((user) => res.status(200).json(user))
     .catch((err) => res.status(404).json(err));
 });
 
