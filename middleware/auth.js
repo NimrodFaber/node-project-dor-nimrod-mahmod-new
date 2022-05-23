@@ -14,7 +14,7 @@ const verifyToken = async (req, res, next) => {
     return res.status(403).send("A token is required for authentication");
   }
   console.log("token beare is :", token);
-  // bearer token
+  // try/ bearer token
   if (token.split(" ").length > 1) token = token.split(" ")[1];
   try {
     const decoded = jwt.verify(token, "myKey");
