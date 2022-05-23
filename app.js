@@ -43,13 +43,9 @@ const morgan = require("morgan");
 app.use(morgan("tiny", { stream: accessLogStream }));
 
 //import that we build
-const User = require("./models/user");
-<<<<<<< HEAD
-const { addUser, getAllUsers } = require("./controllers/users");
-const { userValidation } = require("./helpers/user_schema_validator")
-=======
+const User = require("./models/user")
 const { addUser, getAllUsers, generateToken } = require("./controllers/users");
->>>>>>> 62c308925a23c488ae14857c0d5a5e948dfc5779
+
 
 //all get req
 app.get("/getALLUsers", cors(corsOptions), (req, res) => {
@@ -61,9 +57,30 @@ app.get("/getALLUsers", cors(corsOptions), (req, res) => {
     .catch((err) => res.json(error(err)));
 });
 
+//all post req
+app.post("/user/register", (req, res) => {
+  let { name, password, isVip, email } = req.body;
+  const user = { name, password, isVip, email };
+  addUser(user)
+    .then((user) => {
+      res.status(201).json({
+        status: "Sucssces",
+        data: user,
+      });
+    })
+    .catch((err) => {
+      console.log(chalk.magenta.bgRed.bold(err));
+      res.status(401).json({
+        status: "error!! check your inputs please",
+        messege: err.keyValue,
+      });
+    });
+});
+
 app.post("/stam", auth, async (req, res) => {
   res.send("mm");
 });
+
 app.post("/logIn", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -85,30 +102,6 @@ app.post("/logIn", async (req, res) => {
   }
 });
 
-//all post req
-app.post("/user/register", (req, res) => {
-  let { name, password, isVip, email } = req.body;
-  const user = { name, password, isVip, email };
-<<<<<<< HEAD
-const valid = userValidation.validateAsync(req.body)
-console.log(valid)
-=======
->>>>>>> 62c308925a23c488ae14857c0d5a5e948dfc5779
-  addUser(user)
-    .then((user) => {
-      res.status(201).json({
-        status: "Sucssces",
-        data: user,
-      });
-    })
-    .catch((err) => {
-      console.log(chalk.magenta.bgRed.bold(err));
-      res.status(401).json({
-        status: "error!! check your inputs please",
-        messege: err.keyValue,
-      });
-    });
-});
 
 //connection
 mongoose

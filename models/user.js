@@ -22,18 +22,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-<<<<<<< HEAD
-// userSchema.methods.validateUserSchema = function (user) {
-//   const blogschema = Joi.object({
-//     name: Joi.string().required(),
-//     isVip: Joi.boolean().required(),
 
-//     email: Joi.string().required().email(),
-//     password: Joi.string().required(),
-//   });
-//   return blogschema;
-// };
-=======
 userSchema.methods.validateUserSchema = function (user) {
   const blogschema = Joi.object({
     name: Joi.string().required(),
@@ -47,5 +36,5 @@ userSchema.methods.hashPassword = async function () {
   this.password = await bcrypt.hash(this.password, 10);
 };
 
->>>>>>> 62c308925a23c488ae14857c0d5a5e948dfc5779
+
 module.exports = mongoose.model("User", userSchema, "users");
