@@ -30,32 +30,52 @@ const bcrypt = require("bcrypt");
 //joi
 const Joi = require("joi");
 //middelware
-app.use(express.static("public"));
+// app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 // app.use("/site", siteRouter);
 // app.use("/scraped", scrapedRouter)
 //joi
-const joi = require("joi")
+const joi = require("joi");
 //morgan
 const morgan = require("morgan");
 app.use(morgan("tiny", { stream: accessLogStream }));
 
 //import that we build
-const User = require("./models/user")
+const User = require("./models/user");
 const { addUser, getAllUsers, generateToken } = require("./controllers/users");
-
+const { getAllVisitCard , getById} = require("./controllers/visitCard");
 
 //all get req
 app.get("/getALLUsers", cors(corsOptions), (req, res) => {
   getAllUsers()
     .then((user) => {
       console.log(log("get all user"));
-      res.status(201).json("sucsses");
+      res.status(201).json(user);
     })
     .catch((err) => res.json(error(err)));
 });
+app.get("/user", auth, (req, res, next) => {
+  if (auth) {
+    res.send("hhhhh");
+  }
+});
+
+app.get("/", (req, res) => {
+  getAllVisitCard()
+    .then((visitCard) => res.status(200).json(visitCard))
+    .catch((err) => res.status(404).json(err));
+});
+
+app.get("/:id", (req, res) => {
+  let id = req.params.id
+  getById(id)
+    .then((visitCard) => res.status(200).json(visitCard))
+    .catch((err) => res.status(404).json(err));
+});
+
+
 
 //all post req
 app.post("/user/register", (req, res) => {
@@ -75,10 +95,6 @@ app.post("/user/register", (req, res) => {
         messege: err.keyValue,
       });
     });
-});
-
-app.post("/stam", auth, async (req, res) => {
-  res.send("mm");
 });
 
 app.post("/logIn", async (req, res) => {
@@ -101,7 +117,6 @@ app.post("/logIn", async (req, res) => {
     console.log(err);
   }
 });
-
 
 //connection
 mongoose
