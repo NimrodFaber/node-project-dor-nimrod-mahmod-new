@@ -53,6 +53,46 @@ POST /user/register 400 53 - 8.539 ms
 POST /user/register 400 53 - 28.734 ms
 POST /user/register 400 268 - 28.613 ms
 POST /user/register 400 52 - 30.762 ms
+<<<<<<< HEAD
 POST /user/register 400 52 - 32.456 ms
 POST /user/register 400 75 - 21.587 ms
 POST /user/register 400 75 - 20.515 ms
+=======
+GET /favicon.ico 404 150 - 4.625 ms
+POST /user/register 400 52 - 87.822 ms
+POST /register 404 148 - 2.150 ms
+POST /user/register 400 51 - 91.988 ms
+POST /user/register 400 53 - 29.938 ms
+POST /user/register 400 53 - 59.585 ms
+POST /user/register 200 73 - 9.059 ms
+POST /user/register 400 53 - 47.348 ms
+POST /user/register 400 64 - 27.444 ms
+POST /user/register 400 51 - 17.836 ms
+POST /user/register 200 112 - 54.434 ms
+POST /user/register 401 115 - 25.165 ms
+POST /user/register 201 142 - 6.627 ms
+POST /user/register 401 116 - 4.852 ms
+POST /user/register 401 143 - 26.088 ms
+POST /user/register 401 82 - 30.563 ms
+POST /user/register 401 82 - 26.920 ms
+POST /user/register 201 143 - 9.253 ms
+POST /user/register 201 144 - 24.741 ms
+POST /user/register 401 84 - 147.344 ms
+POST /user/register 201 199 - 91.221 ms
+POST /user/register 201 200 - 97.615 ms
+POST /user/logIn 404 150 - 2.594 ms
+GET /stam 404 143 - 4.049 ms
+POST /stam 200 2 - 2.771 ms
+POST /stam 403 38 - 3.661 ms
+POST /user/logIn 404 150 - 1.603 ms
+POST /logIn 400 62 - 18.846 ms
+POST /stam 403 38 - 0.754 ms
+POST /logIn 400 62 - 20.898 ms
+POST /logIn 400 62 - 22.091 ms
+POST /users/register 404 154 - 2.150 ms
+POST /user/register 401 45 - 19.922 ms
+POST /user/register 201 195 - 135.634 ms
+POST /stam 403 38 - 0.724 ms
+POST /logIn 200 197 - 133.522 ms
+POST /stam 200 2 - 4.683 ms
+>>>>>>> 62c308925a23c488ae14857c0d5a5e948dfc5779

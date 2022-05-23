@@ -1,3 +1,5 @@
+//Middleware
+const auth = require("./middleware/auth");
 //express mongose
 const express = require("express");
 const app = express();
@@ -21,7 +23,8 @@ let accessLogStream = fs.createWriteStream(path.join(__dirname, "logger.log"), {
 const chalk = require("chalk");
 const log = chalk.bold.white.bgGreen;
 const error = chalk.bold.white.bgRed;
-
+//bcrypt
+const bcrypt = require("bcrypt");
 // siteRouter = require("./routers/siterouter"),
 // scrapedRouter = require("./routers/scrapedrouter");
 //joi
@@ -41,8 +44,12 @@ app.use(morgan("tiny", { stream: accessLogStream }));
 
 //import that we build
 const User = require("./models/user");
+<<<<<<< HEAD
 const { addUser, getAllUsers } = require("./controllers/users");
 const { userValidation } = require("./helpers/user_schema_validator")
+=======
+const { addUser, getAllUsers, generateToken } = require("./controllers/users");
+>>>>>>> 62c308925a23c488ae14857c0d5a5e948dfc5779
 
 //all get req
 app.get("/getALLUsers", cors(corsOptions), (req, res) => {
@@ -53,24 +60,53 @@ app.get("/getALLUsers", cors(corsOptions), (req, res) => {
     })
     .catch((err) => res.json(error(err)));
 });
+
+app.post("/stam", auth, async (req, res) => {
+  res.send("mm");
+});
+app.post("/logIn", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!(email && password)) {
+      res.status(400).send("All input is required");
+    }
+
+    const user = await User.findOne({ email });
+    console.log(user);
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const token = await generateToken(user);
+      res.status(200).json(token);
+    } else
+      res
+        .status(400)
+        .send("Invalid Credentials  !! Check your email and password please!!");
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 //all post req
 app.post("/user/register", (req, res) => {
   let { name, password, isVip, email } = req.body;
   const user = { name, password, isVip, email };
+<<<<<<< HEAD
 const valid = userValidation.validateAsync(req.body)
 console.log(valid)
+=======
+>>>>>>> 62c308925a23c488ae14857c0d5a5e948dfc5779
   addUser(user)
     .then((user) => {
-      res.json(user);
-      console.log(log("user is addit"));
+      res.status(201).json({
+        status: "Sucssces",
+        data: user,
+      });
     })
     .catch((err) => {
-      res.status(400).json({
-        status: "error",
-        message: err.message,
+      console.log(chalk.magenta.bgRed.bold(err));
+      res.status(401).json({
+        status: "error!! check your inputs please",
+        messege: err.keyValue,
       });
-
-      console.log(error(err));
     });
 });
 
