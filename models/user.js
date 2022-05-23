@@ -21,14 +21,14 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.methods.validateUserSchema = function (user) {
-  const blogschema = Joi.object({
-    name: Joi.string().required(),
-    isVip: Joi.boolean().required(),
+// userSchema.methods.validateUserSchema = function (user) {
+//   const blogschema = Joi.object({
+//     name: Joi.string().required(),
+//     isVip: Joi.boolean().required(),
 
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  });
-  return blogschema;
-};
+//     email: Joi.string().required().email(),
+//     password: Joi.string().required(),
+//   });
+//   return blogschema;
+// };
 module.exports = mongoose.model("User", userSchema, "users");

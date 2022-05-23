@@ -33,7 +33,8 @@ app.use(express.json());
 app.use(cors());
 // app.use("/site", siteRouter);
 // app.use("/scraped", scrapedRouter)
-
+//joi
+const joi = require("joi")
 //morgan
 const morgan = require("morgan");
 app.use(morgan("tiny", { stream: accessLogStream }));
@@ -41,6 +42,7 @@ app.use(morgan("tiny", { stream: accessLogStream }));
 //import that we build
 const User = require("./models/user");
 const { addUser, getAllUsers } = require("./controllers/users");
+const { userValidation } = require("./helpers/user_schema_validator")
 
 //all get req
 app.get("/getALLUsers", cors(corsOptions), (req, res) => {
@@ -55,7 +57,8 @@ app.get("/getALLUsers", cors(corsOptions), (req, res) => {
 app.post("/user/register", (req, res) => {
   let { name, password, isVip, email } = req.body;
   const user = { name, password, isVip, email };
-
+const valid = userValidation.validateAsync(req.body)
+console.log(valid)
   addUser(user)
     .then((user) => {
       res.json(user);

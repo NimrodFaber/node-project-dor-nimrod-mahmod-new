@@ -53,3 +53,6 @@ POST /user/register 400 53 - 8.539 ms
 POST /user/register 400 53 - 28.734 ms
 POST /user/register 400 268 - 28.613 ms
 POST /user/register 400 52 - 30.762 ms
+POST /user/register 400 52 - 32.456 ms
+POST /user/register 400 75 - 21.587 ms
+POST /user/register 400 75 - 20.515 ms
