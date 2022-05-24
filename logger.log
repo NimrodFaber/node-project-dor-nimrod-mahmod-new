@@ -175,3 +175,8 @@ GET /all/dor 401 13 - 2.233 ms
 GET /all/dor 200 167 - 7.236 ms
 GET /token 200 167 - 41.568 ms
 GET /token 404 263 - 12.478 ms
+POST /login 200 197 - 200.137 ms
+GET /token 404 263 - 2.251 ms
+POST /login 200 197 - 180.893 ms
+GET /token 200 167 - 19.357 ms
+POST /login 200 197 - 181.330 ms
