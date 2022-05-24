@@ -1,5 +1,6 @@
 const User = require("../models/user"),
-jwt = require("jsonwebtoken");
+  jwt = require("jsonwebtoken"),
+  Joi = require("joi");
 function addUser(user) {
   return new Promise(async (resolve, reject) => {
     const newUser = new User(user);
@@ -28,11 +29,9 @@ const generateToken = (user) => {
   });
 };
 
-
-function getUserById(_id)  {
- console.log(_id._id);
+function getUserById(_id) {
+  console.log(_id._id);
   return new Promise((resolve, reject) => {
-   
     User.findById(_id)
       .then((User) => resolve(User))
       .catch((err) => reject(err));
