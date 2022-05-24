@@ -23,7 +23,6 @@ const userSchema = new mongoose.Schema(
     },
     cards: {
       type: [Object],
-      required: "The emailt is a required field!",
     },
   },
   { timestamps: true }
@@ -35,6 +34,7 @@ userSchema.methods.validateUserSchema = function (user) {
     isVip: Joi.boolean().required(),
     email: Joi.string().required().email(),
     password: Joi.string().required(),
+    cards: Joi.required(),
   });
   return blogschema;
 };

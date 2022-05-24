@@ -6,6 +6,7 @@ const User = require("../models/user");
 const verifyToken = async (req, res, next) => {
   let token =
     req.body.token ||
+    req.params.token ||
     req.query.token ||
     req.headers["x-access-token"] ||
     req.headers["authorization"];

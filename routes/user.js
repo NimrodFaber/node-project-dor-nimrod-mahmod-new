@@ -1,4 +1,5 @@
 const auth = require("../middleware/auth");
+const User = require("../models/user");
 //cors
 const cors = require("cors");
 let corsOptions = {
@@ -6,13 +7,12 @@ let corsOptions = {
   optionsSuccessStatus: 200,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 };
-const User = require("./models/user");
 const {
   addUser,
   getAllUsers,
   generateToken,
   getUserById,
-} = require("./controllers/users");
+} = require("../controllers/users");
 const express = require("express");
 const router = express.Router();
 //chalk
@@ -40,8 +40,8 @@ router.get("/getUserById", auth, (req, res) => {
 });
 
 router.post("/register", (req, res) => {
-  let { name, password, isVip, email } = req.body;
-  const user = { name, password, isVip, email };
+  let { name, password, isVip, email, cards } = req.body;
+  const user = { name, password, isVip, email, cards };
   addUser(user)
     .then((user) => {
       res.status(201).json({
@@ -58,7 +58,7 @@ router.post("/register", (req, res) => {
     });
 });
 
-router.post("/logIn", async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!(email && password)) {

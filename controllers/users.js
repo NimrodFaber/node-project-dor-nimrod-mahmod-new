@@ -1,5 +1,6 @@
-const User = require("../models/user"),
-  jwt = require("jsonwebtoken"),
+const User = require("../models/user");
+
+const jwt = require("jsonwebtoken"),
   Joi = require("joi");
 function addUser(user) {
   return new Promise(async (resolve, reject) => {
