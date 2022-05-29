@@ -53,7 +53,7 @@ router.post("/register", (req, res) => {
       console.log(chalk.magenta.bgRed.bold(err));
       res.status(401).json({
         status: "error!! check your inputs please",
-        messege: err.keyValue,
+        messege: err.details[0].message,
       });
     });
 });

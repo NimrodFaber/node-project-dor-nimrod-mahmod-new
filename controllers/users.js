@@ -39,7 +39,9 @@ function getUserById(_id) {
   });
 }
 
-exports.getAllUsers = getAllUsers;
-exports.getUserById = getUserById;
-exports.addUser = addUser;
-exports.generateToken = generateToken;
+module.exports = {
+  getAllUsers,
+  getUserById,
+  addUser,
+  generateToken,
+};

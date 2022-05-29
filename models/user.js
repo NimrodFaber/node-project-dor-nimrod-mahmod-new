@@ -33,7 +33,7 @@ userSchema.methods.validateUserSchema = function (user) {
     name: Joi.string().required(),
     isVip: Joi.boolean().required(),
     email: Joi.string().required().email(),
-    password: Joi.string().required(),
+    password: Joi.string().min(6).required(),
     cards: Joi.required(),
   });
   return blogschema;
