@@ -28,7 +28,7 @@
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
-    "mongoose": "^6.3.3",
+    "mongoose": "6.0.12",
     "morgan": "^1.10.0",
     "npm": "^8.10.0"
   },
