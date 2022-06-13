@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const port = 3000;
 const cardRouter = require("./routes/cards");
 const userdRouter = require("./routes/user");
+const admindRouter = require("./routes/admin");
 ///js import
 var fs = require("fs");
 var path = require("path");
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/card", cardRouter);
 app.use("/user", userdRouter);
+app.use("/admin", admindRouter);
 
 //connection
 mongoose

@@ -1,4 +1,5 @@
 const auth = require("../middleware/auth");
+const isAdmin = require("../middleware/admin");
 const express = require("express"),
   router = express.Router();
 //chalk
@@ -9,9 +10,11 @@ const {
   getAllVisitCard,
   getById,
   addCard,
+  deleteCard,
   editCardById,
   getCardsFromUser,
 } = require("../controllers/visitCard");
+
 router.get("/", (req, res) => {
   getAllVisitCard()
     .then((visitCard) => res.status(200).json(visitCard))
@@ -41,8 +44,23 @@ router.put("/editCardById/cardId/:id", auth, (req, res) => {
     cardId: req.params.id,
     userId: req.user_id,
   };
+  const updatedCard = {};
   editCardById(filter)
-    .then((cards) => res.status(200).json(cards))
+    .then((card) => {
+      updatedCard = card;
+      res.status(200).json(updatedCard);
+    })
+    .catch((err) => {
+      console.log(chalk.magenta.bgRed.bold(err));
+      res.status(400).json(err);
+    });
+});
+
+router.delete("/cardDelete/cardId/:id", auth, (req, res) => {
+  const cardId = req.params.id;
+  const userId = req.user_id;
+  deleteCard(cardId,userId)
+    .then((card) => res.status(200).json(card))
     .catch((err) => {
       console.log(chalk.magenta.bgRed.bold(err));
       res.status(400).json(err);

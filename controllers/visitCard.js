@@ -51,7 +51,7 @@ function getCardsFromUser(userId) {
 }
 function editCardById(filter) {
   return new Promise(async (resolve, reject) => {
-    const { userId,cardId} = filter
+    const { userId, cardId } = filter;
     let user = await User.findById(userId);
     if (checkIsVip(user)) {
       visitCard
@@ -63,7 +63,38 @@ function editCardById(filter) {
     }
   });
 }
-
+function deleteCard(cardId, userId) {
+  return new Promise(async (resolve, reject) => {
+    let user = await User.findById(userId);
+    console.log(user);
+    if (checkIsVip(user) || checkIsAdmin(user)) {
+     await deleteCardFromUser(cardId);
+      visitCard
+        .findOneAndDelete({ _id: cardId })
+        .then((card) => resolve(card))
+        .catch((err) => reject(err));
+    } else {
+      reject({ status: "failed", message: "u need to be a vip" });
+    }
+  });
+} 
+async function deleteCardFromUser(_id) {
+  let card = await visitCard.findById({_id});
+  console.log("this is the card" + card);
+  let userId = card._doc.user_id;
+  let user = await User.findById(userId);
+  console.log("delete"+user.cards);
+  user.cards.forEach((card, index) => {
+    if (card._id == _id) {
+      user.cards.splice(index, 1);
+      console.log("delete user card" + user.cards);
+      user.save();
+    }
+  });
+}
+function checkIsAdmin(user) {
+  return user.isAdmin ? true : false;
+}
 function checkIsVip(user) {
   return user.isVip ? true : false;
 }
@@ -74,4 +105,5 @@ module.exports = {
   addCard,
   getCardsFromUser,
   editCardById,
+  deleteCard,
 };

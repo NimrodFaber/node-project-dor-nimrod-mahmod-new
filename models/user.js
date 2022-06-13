@@ -18,12 +18,16 @@ const userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: "The emailt is a required field!",
+      required: "The email is a required field!",
       unique: true,
     },
     cards: {
       type: [Object],
-    },
+    },isAdmin:{
+      type:Boolean ,
+      default: false,
+
+    }
   },
   { timestamps: true }
 );
