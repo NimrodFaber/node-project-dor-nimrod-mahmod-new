@@ -3,6 +3,8 @@ const User = require("../models/user");
 const { findById } = require("../models/user");
 const res = require("express/lib/response");
 const Joi = require("joi");
+const mongoose = require("mongoose");
+
 function getAllVisitCard() {
   return new Promise((resolve, reject) => {
     visitCard
@@ -42,6 +44,39 @@ function addCard(card, userId) {
     }
   });
 }
+
+//bouns not done it
+function updateCardId(cardId, newId) {
+  return new Promise(async (resolve, reject) => {
+    if (await checkCardId(newId)) {
+      const id = newId[0]._id;
+      let objid = mongoose.Types.ObjectId(id);
+      visitCard
+        .findOneAndUpdate({ _id: cardId }, { _id: objid }, { upsert: true })
+        .then((card) => resolve(card))
+        .catch((err) => reject(err));
+
+      // card._id = _id;
+      // card
+      //   .save()
+    } else {
+      reject("id is all ready in use");
+    }
+  });
+}
+async function checkCardId(newId) {
+  try {
+    const card = await visitCard.findById(newId);
+    if (card === null) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    return true;
+  }
+}
+
 function getCardsFromUser(userId) {
   return new Promise(async (resolve, reject) => {
     User.findById(userId)
@@ -63,12 +98,45 @@ function editCardById(filter) {
     }
   });
 }
+
+function updateCardLikes(cardId, likes) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const card = await visitCard.findById(cardId);
+      if (await checkIsID(likes)) {
+        card.likes = likes;
+        card
+          .save()
+          .then((card) => resolve(card))
+          .catch((err) => reject(err));
+      } else {
+        reject("error:you must send data");
+      }
+    } catch (err) {
+      reject("card id is not a valid id");
+    }
+  });
+}
+async function checkIsID(likes) {
+  try {
+    for (const like of likes) {
+      let user = await User.findById(like._id);
+      if (user === null) {
+        return false;
+      }
+    }
+
+    return true;
+  } catch (err) {
+    console.log("function error", err);
+  }
+}
 function deleteCard(cardId, userId) {
   return new Promise(async (resolve, reject) => {
     let user = await User.findById(userId);
     console.log(user);
     if (checkIsVip(user) || checkIsAdmin(user)) {
-     await deleteCardFromUser(cardId);
+      await deleteCardFromUser(cardId);
       visitCard
         .findOneAndDelete({ _id: cardId })
         .then((card) => resolve(card))
@@ -77,13 +145,13 @@ function deleteCard(cardId, userId) {
       reject({ status: "failed", message: "u need to be a vip" });
     }
   });
-} 
+}
 async function deleteCardFromUser(_id) {
-  let card = await visitCard.findById({_id});
+  let card = await visitCard.findById({ _id });
   console.log("this is the card" + card);
   let userId = card._doc.user_id;
   let user = await User.findById(userId);
-  console.log("delete"+user.cards);
+  console.log("delete" + user.cards);
   user.cards.forEach((card, index) => {
     if (card._id == _id) {
       user.cards.splice(index, 1);
@@ -92,6 +160,7 @@ async function deleteCardFromUser(_id) {
     }
   });
 }
+
 function checkIsAdmin(user) {
   return user.isAdmin ? true : false;
 }
@@ -106,4 +175,6 @@ module.exports = {
   getCardsFromUser,
   editCardById,
   deleteCard,
+  updateCardLikes,
+  updateCardId,
 };

@@ -10,9 +10,11 @@ const {
   getAllVisitCard,
   getById,
   addCard,
+  updateCardId,
   deleteCard,
   editCardById,
   getCardsFromUser,
+  updateCardLikes,
 } = require("../controllers/visitCard");
 
 router.get("/", (req, res) => {
@@ -59,7 +61,7 @@ router.put("/editCardById/cardId/:id", auth, (req, res) => {
 router.delete("/cardDelete/cardId/:id", auth, (req, res) => {
   const cardId = req.params.id;
   const userId = req.user_id;
-  deleteCard(cardId,userId)
+  deleteCard(cardId, userId)
     .then((card) => res.status(200).json(card))
     .catch((err) => {
       console.log(chalk.magenta.bgRed.bold(err));
@@ -67,4 +69,27 @@ router.delete("/cardDelete/cardId/:id", auth, (req, res) => {
     });
 });
 
+router.patch("/cardsLikes/cardId/:id", auth, (req, res) => {
+  const cardId = req.params.id;
+  const userId = req.user_id;
+  const likes = req.body;
+  updateCardLikes(cardId, likes)
+    .then((card) => res.status(200).json(card))
+    .catch((err) => {
+      console.log(chalk.magenta.bgRed.bold(err));
+      res.status(500).json(err);
+    });
+});
+//bouns not done yet
+router.patch("/bouns/cardId/:id", auth, isAdmin, (req, res) => {
+  const cardId = req.params.id;
+  const userId = req.user_id;
+  const newId = req.body;
+  updateCardId(cardId, newId)
+    .then((card) => res.status(200).json(card))
+    .catch((err) => {
+      console.log(chalk.magenta.bgRed.bold(err));
+      res.status(500).json(err);
+    });
+});
 module.exports = router;
