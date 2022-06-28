@@ -34,10 +34,13 @@ const visitCardSchema = new mongoose.Schema(
 
 visitCardSchema.methods.validateCardSchema = function (card) {
   const blogschema = Joi.object({
+    _id: Joi.object(),
     businessName: Joi.string().required(),
     businessDiscribe: Joi.string().required(),
     businessAdress: Joi.string().required(),
     businessPhone: Joi.string().required(),
+    createdAt: Joi.date(),
+    updatedAt: Joi.date(),
     businessPicture: Joi.required(),
     likes: Joi.required(),
   });
