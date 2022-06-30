@@ -46,34 +46,50 @@ function addCard(card, userId) {
 }
 
 //bouns not done it
-function updateCardId(cardId, newId) {
+function updateCardId(cardId, newId, userId) {
   return new Promise(async (resolve, reject) => {
-    if (await checkCardId(newId)) {
+    const result = await checkCardId(newId);
+    if (result === true) {
+      let oldCard = await visitCard.findById(cardId);
       const id = newId[0]._id;
       let objid = mongoose.Types.ObjectId(id);
-      visitCard
-        .findOneAndUpdate({ _id: cardId }, { _id: objid }, { upsert: true })
+
+      let newVisitCard = {
+        _id: objid,
+        likes: oldCard.likes,
+        businessName: oldCard.businessName,
+        businessDiscribe: oldCard.businessDiscribe,
+        businessAdress: oldCard.businessAdress,
+        businessPhone: oldCard.businessPhone,
+        businessPicture: oldCard.businessPicture,
+        createdAt: oldCard.createdAt,
+        updatedAt: oldCard.updatedAt,
+      };
+      deleteCard(cardId, oldCard.user_id)
+        .then()
+        .catch((err) => reject(err));
+      addCard(newVisitCard, oldCard.user_id)
         .then((card) => resolve(card))
         .catch((err) => reject(err));
-
-      // card._id = _id;
-      // card
-      //   .save()
-    } else {
+    } else if (!result) {
       reject("id is all ready in use");
+    } else {
+      reject(result);
     }
   });
 }
 async function checkCardId(newId) {
   try {
-    const card = await visitCard.findById(newId);
-    if (card === null) {
-      return true;
-    } else {
-      return false;
+    if (newId.length !== 24) {
+      const card = await visitCard.findById(newId);
+      if (card === null) {
+        return true;
+      } else {
+        return false;
+      }
     }
-  } catch (err) {
-    return true;
+  } catch {
+    return "errorId:id must be 24 letters";
   }
 }
 
@@ -134,7 +150,6 @@ async function checkIsID(likes) {
 function deleteCard(cardId, userId) {
   return new Promise(async (resolve, reject) => {
     let user = await User.findById(userId);
-    console.log(user);
     if (checkIsVip(user) || checkIsAdmin(user)) {
       await deleteCardFromUser(cardId);
       visitCard
@@ -148,14 +163,11 @@ function deleteCard(cardId, userId) {
 }
 async function deleteCardFromUser(_id) {
   let card = await visitCard.findById({ _id });
-  console.log("this is the card" + card);
   let userId = card._doc.user_id;
   let user = await User.findById(userId);
-  console.log("delete" + user.cards);
   user.cards.forEach((card, index) => {
     if (card._id == _id) {
       user.cards.splice(index, 1);
-      console.log("delete user card" + user.cards);
       user.save();
     }
   });

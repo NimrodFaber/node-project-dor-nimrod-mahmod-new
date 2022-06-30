@@ -85,7 +85,7 @@ router.patch("/bouns/cardId/:id", auth, isAdmin, (req, res) => {
   const cardId = req.params.id;
   const userId = req.user_id;
   const newId = req.body;
-  updateCardId(cardId, newId)
+  updateCardId(cardId, newId, userId)
     .then((card) => res.status(200).json(card))
     .catch((err) => {
       console.log(chalk.magenta.bgRed.bold(err));
